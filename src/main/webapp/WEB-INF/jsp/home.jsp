@@ -54,16 +54,7 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/bootstrap-toogle/js/bootstrap2-toggle.min.js"></script>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		$.ajax({
-			url : "/UCloudPortal/device/list"
-		}).then(function(data) {
-			//will return two json object
-			//http://localhost:8080/UCloudPortal/device/list       
-		});
-	});
-</script>
+
 </head>
 <body>
 	<div class="container">
@@ -71,6 +62,8 @@
 
 		<!-- each row show 3 columns, each column for 1 profile -->
 		<!-- let's try static layout first -->
+
+You should be viewing this page only if you are authenticated!
 
 		<a href="./logout">logout</a>
 

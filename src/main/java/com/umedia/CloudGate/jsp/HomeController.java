@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,19 +40,20 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login() {
+	public String showLoginPage() {
 		
 		return "login";
 	}
 	
 	// redirect to login page
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String loginok() {
+	public String authenticateLogin() {
 		// is authenticated?
 		Authentication auth = SecurityContextHolder.getContext()
 				.getAuthentication();
+		
 		if (auth != null) {
-			// Boolean val2 = auth.isAuthenticated();
+			 Boolean val2 = auth.isAuthenticated();
 			String name = auth.getName();
 			System.out.printf("%s is login", name);
 		}

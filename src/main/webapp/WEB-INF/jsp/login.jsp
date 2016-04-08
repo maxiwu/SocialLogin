@@ -14,7 +14,7 @@
 <link
 	href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
 	rel="stylesheet" />
-<link href="./css/signin.css" rel="stylesheet" /> 
+<link href="./css/signin.css" rel="stylesheet" />
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -44,7 +44,9 @@
 			<h3 class="omb_authTitle">
 				Login or <a href="#">Sign up</a>
 			</h3>
-			<form action="<c:url value="/signin/facebook" />" method="POST">
+			<form action="<c:url value="/auth/facebook" />" method="POST">
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
 				<div class="row omb_row-sm-offset-3 omb_socialButtons">
 					<div class="col-xs-4 col-sm-2">
 						<button type="submit"
@@ -79,7 +81,7 @@
 					<form:form>
 						<input type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
-						<form class="omb_loginForm" name='f' action='login'
+						<form class="omb_loginForm" name='f' action="${pageContext.request.contextPath}/login/authenticate"
 							autocomplete="off" method="POST">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-user"></i></span>

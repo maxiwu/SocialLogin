@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.umedia.CloudGate.jsp;
+package com.umedia.CloudGate;
 
 import javax.sql.DataSource;
 
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -26,6 +27,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+//import com.umedia.CloudGate.dao.UsersDao;
 
 @Configuration
 @EnableAutoConfiguration
@@ -40,7 +43,7 @@ public class SampleWebJspApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SampleWebJspApplication.class, args);
 	}
-
+	
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
@@ -49,11 +52,17 @@ public class SampleWebJspApplication extends SpringBootServletInitializer {
 		ds.setUsername("java");
 		ds.setPassword("12345");*/
 		ds.setDriverClassName("org.mariadb.jdbc.Driver");
-		ds.setUrl("jdbc:mariadb://localhost:3306/dragonfly");
+		ds.setUrl("jdbc:mariadb://localhost:3306/cloudsocial");
 		ds.setUsername("root");
-		ds.setPassword("LZ9ESW");
-	
+		ds.setPassword("LZ9ESW");	
 		
 		return ds;
 	}
+	
+/*	@Bean
+	public UsersDao usersdao()
+	{
+		UsersDao usersdao = new UsersDao(datasource);
+		return usersdao;
+	}*/
 }
