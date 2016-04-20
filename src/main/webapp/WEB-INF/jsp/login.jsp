@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=BIG5"
-	pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
@@ -14,7 +14,7 @@
 <link
 	href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"
 	rel="stylesheet" />
-<link href="./css/signin.css" rel="stylesheet" />
+<link href="${pageContext.request.contextPath}/css/signin.css" rel="stylesheet" />
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -42,32 +42,30 @@
 
 		<div class="omb_login">
 			<h3 class="omb_authTitle">
-				Login or <a href="#">Sign up</a>
+				Login or <a href="${pageContext.request.contextPath}/user/register">Sign up</a>
 			</h3>
-			<form action="<c:url value="/auth/facebook" />" method="POST">
-				<input type="hidden" name="${_csrf.parameterName}"
-					value="${_csrf.token}" />
-				<div class="row omb_row-sm-offset-3 omb_socialButtons">
-					<div class="col-xs-4 col-sm-2">
-						<button type="submit"
-							class="btn btn-lg btn-block omb_btn-facebook">
-							<i class="fa fa-facebook visible-xs"></i> <span class="hidden-xs">Facebook</span>
-						</button>
-						<input type="hidden" name="scope"
-							value="email,user_friends,user_posts,user_about_me" />
-					</div>
-					<div class="col-xs-4 col-sm-2">
-						<a href="#" class="btn btn-lg btn-block omb_btn-twitter"> <i
-							class="fa fa-twitter visible-xs"></i> <span class="hidden-xs">Twitter</span>
-						</a>
-					</div>
-					<div class="col-xs-4 col-sm-2">
-						<a href="#" class="btn btn-lg btn-block omb_btn-google"> <i
-							class="fa fa-google-plus visible-xs"></i> <span class="hidden-xs">Google+</span>
-						</a>
-					</div>
+
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
+			<div class="row omb_row-sm-offset-3 omb_socialButtons">
+				<div class="col-xs-4 col-sm-2">
+					<a href="/auth/facebook"
+						class="btn btn-lg btn-block omb_btn-facebook"> <i
+						class="fa fa-facebook visible-xs"></i> <span class="hidden-xs">Facebook</span>
+					</a> <input type="hidden" name="scope"
+						value="email,user_friends,user_posts,user_about_me" />
 				</div>
-			</form>
+				<div class="col-xs-4 col-sm-2">
+					<a href="#" class="btn btn-lg btn-block omb_btn-twitter"> <i
+						class="fa fa-twitter visible-xs"></i> <span class="hidden-xs">Twitter</span>
+					</a>
+				</div>
+				<div class="col-xs-4 col-sm-2">
+					<a href="#" class="btn btn-lg btn-block omb_btn-google"> <i
+						class="fa fa-google-plus visible-xs"></i> <span class="hidden-xs">Google+</span>
+					</a>
+				</div>
+			</div>
 
 			<div class="row omb_row-sm-offset-3 omb_loginOr">
 				<div class="col-xs-12 col-sm-6">
@@ -81,7 +79,8 @@
 					<form:form>
 						<input type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
-						<form class="omb_loginForm" name='f' action="${pageContext.request.contextPath}/login/authenticate"
+						<form class="omb_loginForm" name='f'
+							action="${pageContext.request.contextPath}/login"
 							autocomplete="off" method="POST">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -95,7 +94,12 @@
 								<input type="password" class="form-control" name="password"
 									placeholder="Password">
 							</div>
-							<span class="help-block"> <!-- Password error -->
+							<span class="help-block"> <c:if
+									test="${param.error == 'true'}">
+									<span><spring:message
+											code="loginPage.authenticationFailure" /></span>
+								</c:if>
+								<!-- Password error -->
 							</span>
 
 							<button class="btn btn-lg btn-primary btn-block" name="submit"

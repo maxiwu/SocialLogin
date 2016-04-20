@@ -65,7 +65,7 @@
 
 You should be viewing this page only if you are authenticated!
 
-		<a href="./logout">logout</a>
+		<a href="${pageContext.request.contextPath}/logout">logout</a>
 
 		<div class="row clearfix well">
 			<div class="col-md-4 show-grid">

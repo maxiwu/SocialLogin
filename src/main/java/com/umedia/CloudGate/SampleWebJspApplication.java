@@ -16,7 +16,14 @@
 
 package com.umedia.CloudGate;
 
+import java.util.Locale;
+
 import javax.sql.DataSource;
+
+
+
+
+
 
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +34,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.social.connect.web.ProviderSignInUtils;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 //import com.umedia.CloudGate.dao.UsersDao;
 
@@ -59,10 +70,26 @@ public class SampleWebJspApplication extends SpringBootServletInitializer {
 		return ds;
 	}
 	
-/*	@Bean
-	public UsersDao usersdao()
+	@Bean
+    public LocaleResolver localeResolver() {
+        final CookieLocaleResolver ret = new CookieLocaleResolver();
+        ret.setDefaultLocale(new Locale("en_US"));
+        return ret;
+    }
+	
+	@Bean 
+	public LocaleChangeInterceptor localeChangeInterceptor(){
+	    LocaleChangeInterceptor localeChangeInterceptor=new LocaleChangeInterceptor();
+	    localeChangeInterceptor.setParamName("language");
+	    return localeChangeInterceptor;
+	}
+	
+	/*@Bean
+	public repositoryUserService RepositoryUserService(Password)
 	{
-		UsersDao usersdao = new UsersDao(datasource);
-		return usersdao;
+		return new com.umedia.CloudGate.service.RepositoryUserService(null, null);
 	}*/
+	/*public void addInterceptors(InterceptorRegistry registry) {
+		   registry.addInterceptor(localeChangeInterceptor());
+		} */
 }

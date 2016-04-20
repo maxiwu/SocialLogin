@@ -10,7 +10,8 @@ import org.springframework.social.connect.ConnectionSignUp;
 import com.umedia.CloudGate.dao.UsersDao;
 import com.umedia.CloudGate.model.UserProfile;
 
-
+//this is automatically sign up user!!
+//need to get rid of this
 
 public class AccountConnectionSignUpService implements ConnectionSignUp {
 

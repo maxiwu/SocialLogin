@@ -1,5 +1,6 @@
 package com.umedia.CloudGate.jsp;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 //import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,11 +34,13 @@ public class HomeController {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	JdbcUserDetailsManager jdbcUserDetailsManager;
+	/*@Autowired
+	SocialControllerUtil util;*/
 
 	// redirect to login page
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String welcome() {
-		return "home";
+		return "login";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -60,6 +64,12 @@ public class HomeController {
 		return "home";
 	}
 
+	 /*@RequestMapping("/login")
+	    public String login(HttpServletRequest request, Principal currentUser, Model model) {
+	        //util.setModel(request, currentUser, model);
+	        return "login";
+	    }*/
+	 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home() {
 		// is authenticated?
@@ -73,42 +83,7 @@ public class HomeController {
 		return "home";
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String register() {
-		return "register";
-	}
-
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String createUser(
-			@RequestParam(value = "username", required = false) String username,
-			@RequestParam(value = "password", required = false) String password,
-			HttpServletRequest request) {
-
-		// SaltSource saltSource = null;
-		// Object salt = null;
-
-		jdbcUserDetailsManager.deleteUser("name");
-
-		// empty grant
-		Collection<GrantedAuthority> allowedOperations = new ArrayList<GrantedAuthority>();
-		allowedOperations.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-		// User 'name' has no authorities and will be treated as 'not found'
-
-		// enabled, account not expired, credential non expired, account non
-		// locked, collection of authorities
-		UserDetails user = new User(username, password, true, true, true, true,
-				allowedOperations);
-
-		// calculate what hashedPassword would be in this configuration
-		String hashedpassword = passwordEncoder.encode(user.getPassword());
-		UserDetails puser = new User(username, hashedpassword, true, true,
-				true, true, allowedOperations);
-
-		jdbcUserDetailsManager.createUser(puser);
-
-		return "login";
-	}
+	/*
 
 	@RequestMapping(value = "/logout")
 	public String logout(HttpServletRequest request,
@@ -119,7 +94,7 @@ public class HomeController {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 		return "login";
-	}
+	}*/
 
 	@RequestMapping(value = "/addrole/{role}")
 	public String addRole(@PathVariable(value = "role") String role) {
