@@ -59,20 +59,44 @@
 
 	<div class="container">
 
+		<c:if test="${connection != null}">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6">
+					<div class="well well-sm">
+						<div class="row">
+							<div class="col-sm-6 col-md-4">
+								<img src="${connection.imageUrl}" alt=""
+									class="img-rounded img-responsive" />
+							</div>
+							<div class="col-sm-6 col-md-8">
+								<h4>${connection.displayName}</h4>
+								<small><cite title="San Francisco, USA">San
+										Francisco, USA <i class="glyphicon glyphicon-map-marker">
+									</i>
+								</cite></small>
+								<p>
+									<i class="glyphicon glyphicon-envelope"></i>${social.email}<br />
+									<i class="glyphicon glyphicon-globe"></i><a
+										href="${connection.profileUrl}">Profile</a>
+									<br /> <i class="glyphicon glyphicon-gift"></i>June 02, 1988
+								</p>
+								<span type="button" class="btn btn-primary">${social.signInProvider}</span>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</c:if>
 
 		<div class="omb_login">
-			<h3 class="omb_authTitle">Register with</h3>
+
 
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-			
 
-			<div class="row omb_row-sm-offset-3 omb_loginOr">
-				<div class="col-xs-12 col-sm-6">
-					<hr class="omb_hrOr">
-					<span class="omb_spanOr">or</span>
-				</div>
-			</div>
+
+
 
 			<div class="row omb_row-sm-offset-3">
 				<div class="col-xs-12 col-sm-6">
@@ -80,11 +104,10 @@
 
 					<form:form class="omb_loginForm" name='f'
 						action="${pageContext.request.contextPath}/user/register"
-						modelAttribute="social" 
-						autocomplete="off" method="POST">
+						modelAttribute="social" autocomplete="off" method="POST">
 						<input type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
-							
+
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user"></i></span>
 							<input type="text" class="form-control" name="username"

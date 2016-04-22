@@ -26,6 +26,8 @@ public class User {
 
 	// @Column(name = "password", length = 255)
 	private String password;
+	
+	private Boolean isSocial;
 
 	// @Enumerated(EnumType.STRING)
 	// @Column(name = "role", length = 20, nullable = false)
@@ -115,6 +117,14 @@ public class User {
 				.toString();
 	}
 
+	public Boolean getIsSocial() {
+		return isSocial;
+	}
+
+	public void setIsSocial(Boolean isSocial) {
+		this.isSocial = isSocial;
+	}
+
 	public static class Builder {
 
 		private User user;
@@ -156,6 +166,10 @@ public class User {
 		}
 
 		public User build() {
+			if(user.signInProvider != null)
+			{user.setIsSocial(true);}
+			else
+			{user.setIsSocial(false);}
 			return user;
 		}
 	}

@@ -18,13 +18,24 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 //import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.WebRequest;
+
+import com.umedia.CloudGate.model.RegistrationForm;
+import com.umedia.CloudGate.model.UserConnection;
+import com.umedia.CloudGate.service.IUserService;
 
 @Controller
 @RequestMapping(value = "/")
@@ -34,8 +45,21 @@ public class HomeController {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	JdbcUserDetailsManager jdbcUserDetailsManager;
-	/*@Autowired
-	SocialControllerUtil util;*/
+	/*
+	 * @Autowired SocialControllerUtil util;
+	 */
+	/*
+	 * @Autowired UsersConnectionRepository connectionRepo;
+	 */
+	@Autowired
+	ProviderSignInUtils providerSignInUtils;
+
+	private IUserService service;
+
+	@Autowired
+	public HomeController(IUserService service) {
+		this.service = service;
+	}
 
 	// redirect to login page
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -45,56 +69,57 @@ public class HomeController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String showLoginPage() {
-		
+
 		return "login";
 	}
-	
+
 	// redirect to login page
+	// is this useful?
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String authenticateLogin() {
 		// is authenticated?
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		
-		if (auth != null) {
-			 Boolean val2 = auth.isAuthenticated();
-			String name = auth.getName();
-			System.out.printf("%s is login", name);
-		}
+		/*
+		 * Authentication auth = SecurityContextHolder.getContext()
+		 * .getAuthentication();
+		 * 
+		 * if (auth != null) { Boolean val2 = auth.isAuthenticated(); String
+		 * name = auth.getName(); System.out.printf("%s is login", name); }
+		 */
+
+		// load data, profile
+
 		return "home";
 	}
 
-	 /*@RequestMapping("/login")
-	    public String login(HttpServletRequest request, Principal currentUser, Model model) {
-	        //util.setModel(request, currentUser, model);
-	        return "login";
-	    }*/
-	 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home() {
+	public String home(Model model, WebRequest request) {
 		// is authenticated?
 		Authentication auth = SecurityContextHolder.getContext()
 				.getAuthentication();
+		String name = null;
 		if (auth != null) {
-			// Boolean val2 = auth.isAuthenticated();
-			String name = auth.getName();
-			System.out.printf("%s is login", name);
+			name = auth.getName();
 		}
+
+		// read profile and put it into session
+		if (name != null) {
+			// read from database
+			UserConnection uc = service.getConnectionByUsername(name);
+			model.addAttribute("connection", uc);
+		}
+		// model.addAttribute("social", social);
 		return "home";
 	}
 
 	/*
-
-	@RequestMapping(value = "/logout")
-	public String logout(HttpServletRequest request,
-			HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		if (auth != null) {
-			new SecurityContextLogoutHandler().logout(request, response, auth);
-		}
-		return "login";
-	}*/
+	 * 
+	 * @RequestMapping(value = "/logout") public String
+	 * logout(HttpServletRequest request, HttpServletResponse response) {
+	 * Authentication auth = SecurityContextHolder.getContext()
+	 * .getAuthentication(); if (auth != null) { new
+	 * SecurityContextLogoutHandler().logout(request, response, auth); } return
+	 * "login"; }
+	 */
 
 	@RequestMapping(value = "/addrole/{role}")
 	public String addRole(@PathVariable(value = "role") String role) {

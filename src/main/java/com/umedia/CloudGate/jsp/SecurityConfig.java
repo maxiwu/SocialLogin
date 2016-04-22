@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,11 +19,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import com.umedia.CloudGate.service.MixUserDetailsService;
-import com.umedia.CloudGate.social.SimpleSocialUsersDetailService;
+
 
 @Configuration
 // @EnableWebSecurity
@@ -48,56 +50,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// default
-
-		//local login only
-		/*http.authorizeRequests().antMatchers("/home").authenticated()
-				.anyRequest().permitAll().and().formLogin().loginPage("/login").failureUrl("/login?error=true")
-				.and().httpBasic()
-				.and().apply(new SpringSocialConfigurer().postLoginUrl("/home")
-						.alwaysUsePostLoginUrl(true));*/
-		http.formLogin().loginPage("/login").defaultSuccessUrl("/home").failureUrl("/login?error=true").permitAll()
-		.and().logout().logoutUrl("/logout").deleteCookies("JSESSIONID")
+		
+		http.formLogin().loginPage("/login").defaultSuccessUrl("/home", true).failureUrl("/fail?error=true").permitAll()
+		.and().logout().invalidateHttpSession(true).logoutUrl("/logout").logoutSuccessUrl("/nothing")
 		.and().authorizeRequests()
 		.antMatchers("/signup/**", "/favicon.ico", "/resources/**", "/resources/css/**", "/css/**", "/user/**").permitAll()
 		.antMatchers("/**").hasRole("USER")
 		.and().rememberMe()
-		.and().apply(new SpringSocialConfigurer().signupUrl("/user/register").postLoginUrl("/home")
-		//.and().apply(new SpringSocialConfigurer().postLoginUrl("/home")
+		.and().apply(new SpringSocialConfigurer().signupUrl("/user/register").postLoginUrl("/home")	
 				.alwaysUsePostLoginUrl(true));
-		/*http.formLogin()
-				.and()
-				.apply(new SpringSocialConfigurer().postLoginUrl("/")
-						.alwaysUsePostLoginUrl(true));*/
-
-		// social login only
-		/*
-		 * http.formLogin() .loginPage("/login")
-		 * .loginProcessingUrl("/login/authenticate")
-		 * .failureUrl("/login?param.error=bad_credentials") .permitAll() .and()
-		 * .logout() .logoutUrl("/logout") .deleteCookies("JSESSIONID") .and()
-		 * .authorizeRequests() .antMatchers("/favicon.ico", "/resources/**",
-		 * "/resources/css/**", "/css/**").permitAll() .antMatchers("/**")
-		 * .authenticated() .and() .rememberMe() .and() // add a
-		 * SocialAuthenticationFilter .apply(new
-		 * SpringSocialConfigurer().postLoginUrl("/")
-		 * .alwaysUsePostLoginUrl(true));
-		 */
-
-		/*
-		 * //support both local and social http //Configures form login
-		 * .formLogin() .loginPage("/login")
-		 * .loginProcessingUrl("/login/authenticate").defaultSuccessUrl("/home")
-		 * .failureUrl("/login?error=bad_credentials") //Configures the logout
-		 * function .and() .logout() .deleteCookies("JSESSIONID")
-		 * .logoutUrl("/logout") .logoutSuccessUrl("/login") //Configures url
-		 * based authorization .and() .authorizeRequests() //Anyone can access
-		 * the urls .antMatchers( "/auth/**", "/login", "/signup/**",
-		 * "/user/register/**" ).permitAll() //The rest of the our application
-		 * is protected. .antMatchers("/**").hasRole("USER") //Adds the
-		 * SocialAuthenticationFilter to Spring Security's filter chain. .and()
-		 * .apply(new SpringSocialConfigurer());
-		 */
+	
 	}
 
 	@Override
@@ -130,7 +92,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public SocialUserDetailsService socialUsersDetailService() {
 		return new MixUserDetailsService(userDetailsService());
-		//return new SimpleSocialUsersDetailService(userDetailsService());
 	}
 	
 }

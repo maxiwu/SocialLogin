@@ -23,8 +23,7 @@ import org.springframework.social.security.AuthenticationNameUserIdSource;
 
 
 
-import com.umedia.CloudGate.dao.UsersDao;
-import com.umedia.CloudGate.social.AccountConnectionSignUpService;
+
 
 @Configuration
 @EnableSocial
@@ -33,16 +32,13 @@ public class SocialConfig implements SocialConfigurer {
 	@Autowired
 	private DataSource dataSource;
 
-	@Autowired
-	private UsersDao usersDao;
+	/*@Autowired
+	private UsersDao usersDao;*/
 
 	@Override
 	public void addConnectionFactories(
 			ConnectionFactoryConfigurer connectionFactoryConfigurer,
 			Environment environment) {
-
-		// System.out.println(environment.getProperty("spring.social.facebook.appId"));
-		// System.out.println(environment.getProperty("spring.social.facebook.appSecret"));
 
 		connectionFactoryConfigurer
 				.addConnectionFactory(new FacebookConnectionFactory(

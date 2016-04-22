@@ -44,11 +44,6 @@ public class MixUserDetailsService implements SocialUserDetailsService {
 		return new SocialUser(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
 	}
 
-	/*@Override
-	public UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
+
 
 }

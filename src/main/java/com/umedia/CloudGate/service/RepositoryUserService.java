@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.umedia.CloudGate.model.RegistrationForm;
 import com.umedia.CloudGate.model.User;
+import com.umedia.CloudGate.model.UserConnection;
 import com.umedia.CloudGate.model.UserProfile;
 
 @Service
@@ -88,6 +89,12 @@ public class RepositoryUserService implements IUserService {
 	@Override
 	public UserProfile getProfileByUsername(String username) {
 		return repository.getUserProfileByUsername(username);
+		
+	}
+	
+	@Override
+	public UserConnection getConnectionByUsername(String username) {
+		return repository.getConnectionByUsername(username);
 		
 	}
 

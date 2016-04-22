@@ -5,6 +5,7 @@ import org.springframework.social.connect.DuplicateConnectionException;
 
 import com.umedia.CloudGate.model.RegistrationForm;
 import com.umedia.CloudGate.model.User;
+import com.umedia.CloudGate.model.UserConnection;
 import com.umedia.CloudGate.model.UserProfile;
 
 public interface IUserService {
@@ -22,4 +23,5 @@ public interface IUserService {
 			throws DuplicateEmailException;
 	
 	public UserProfile getProfileByUsername(String username);
+	public UserConnection getConnectionByUsername(String username);
 }

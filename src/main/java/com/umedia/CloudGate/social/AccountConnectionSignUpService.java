@@ -1,4 +1,4 @@
-package com.umedia.CloudGate.social;
+/*package com.umedia.CloudGate.social;
 
 import java.util.UUID;
 
@@ -31,4 +31,4 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
         usersDao.createUser(userId, new UserProfile(userId, profile));
         return userId;
     }
-}
+}*/

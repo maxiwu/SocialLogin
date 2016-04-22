@@ -1,4 +1,4 @@
-package com.umedia.CloudGate.social;
+/*package com.umedia.CloudGate.social;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,4 +22,4 @@ public class SimpleSocialUsersDetailService implements SocialUserDetailsService 
         return new SocialUser(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
     }
 
-}
+}*/

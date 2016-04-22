@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.umedia.CloudGate.model.User;
+import com.umedia.CloudGate.model.UserConnection;
 import com.umedia.CloudGate.model.UserProfile;
 
 /*public interface UserRepository extends JpaRepository<User, Long> {
@@ -22,4 +23,5 @@ public interface IUserRepository {
     
     public UserProfile getUserProfileByUsername(String username);
     public UserProfile getUserProfileByUserId(String userId);
+    public UserConnection getConnectionByUsername(String username);
 }

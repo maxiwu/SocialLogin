@@ -84,12 +84,5 @@ public class SampleWebJspApplication extends SpringBootServletInitializer {
 	    return localeChangeInterceptor;
 	}
 	
-	/*@Bean
-	public repositoryUserService RepositoryUserService(Password)
-	{
-		return new com.umedia.CloudGate.service.RepositoryUserService(null, null);
-	}*/
-	/*public void addInterceptors(InterceptorRegistry registry) {
-		   registry.addInterceptor(localeChangeInterceptor());
-		} */
+
 }

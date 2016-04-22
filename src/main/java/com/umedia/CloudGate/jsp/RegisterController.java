@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +29,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.umedia.CloudGate.model.RegistrationForm;
 import com.umedia.CloudGate.model.SocialMediaProviders;
+import com.umedia.CloudGate.model.SocialProfile;
 import com.umedia.CloudGate.model.User;
 import com.umedia.CloudGate.service.DuplicateEmailException;
 import com.umedia.CloudGate.service.IUserService;
@@ -61,8 +63,15 @@ public class RegisterController {
 		Connection<?> connection = providerSignInUtils
 				.getConnectionFromSession(request);
 		if (connection != null) {
-			RegistrationForm registration = createRegistrationDTO(connection);
+			RegistrationForm registration = createRegistrationDTO(connection);			
 			model.addAttribute("social", registration);
+			SocialProfile profile = createSocialProfileDTO(connection);
+			model.addAttribute("connection", profile);			
+		}
+		else
+		{
+			//hanle no social information
+			model.addAttribute("social", new RegistrationForm());
 		}
 
 		return "register";
@@ -76,11 +85,11 @@ public class RegisterController {
 			WebRequest request) {
 
 		// if user register with social, need to setup a connection in database
-		if (social != null) {
+		/*if (social != null) {
 			System.out.println(social.toString());
 		} else {
 			System.out.println("create local user");
-		}
+		}*/
 		
 		//this should add password and generate unique user Id
 		social.setPassword(password);
@@ -93,36 +102,17 @@ public class RegisterController {
         }
 		//login with the new registrated account
 		SecurityUtil.logInUser(newRegUser);
-        //ProviderSignInUtils.handlePostSignUp(newRegUser.getEmail(), request);
 		
 		com.umedia.CloudGate.model.UserProfile profile = service.getProfileByUsername(username);
 		
 		//postsignup ID! is the ID for connection
+		if(profile != null)
+		{
 		providerSignInUtils.doPostSignUp(profile.getUserId(), request);
+		}
  
         return "home";
-		/*
-		 * // SaltSource saltSource = null; // Object salt = null;
-		 * 
-		 * jdbcUserDetailsManager.deleteUser("name");
-		 * 
-		 * // empty grant Collection<GrantedAuthority> allowedOperations = new
-		 * ArrayList<GrantedAuthority>(); allowedOperations.add(new
-		 * SimpleGrantedAuthority("ROLE_USER"));
-		 * 
-		 * // User 'name' has no authorities and will be treated as 'not found'
-		 * 
-		 * // enabled, account not expired, credential non expired, account non
-		 * // locked, collection of authorities UserDetails user = new
-		 * User(username, password, true, true, true, true, allowedOperations);
-		 * 
-		 * // calculate what hashedPassword would be in this configuration
-		 * String hashedpassword = passwordEncoder.encode(user.getPassword());
-		 * UserDetails puser = new User(username, hashedpassword, true, true,
-		 * true, true, allowedOperations);
-		 * 
-		 * jdbcUserDetailsManager.createUser(puser);
-		 */
+		
 	}
 
 	// DTO = data transfer object?
@@ -138,6 +128,18 @@ public class RegisterController {
 			ConnectionKey providerKey = connection.getKey();
 			dto.setSignInProvider(SocialMediaProviders.valueOf(providerKey
 					.getProviderId().toUpperCase()));
+		}
+
+		return dto;
+	}
+	
+	private SocialProfile createSocialProfileDTO(Connection<?> connection) {
+		SocialProfile dto = new SocialProfile();
+
+		if (connection != null) {			
+			dto.setDisplayName(connection.getDisplayName());
+			dto.setImageUrl(connection.getImageUrl());
+			dto.setProfileUrl(connection.getProfileUrl());
 		}
 
 		return dto;

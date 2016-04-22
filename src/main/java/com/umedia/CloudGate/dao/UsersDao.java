@@ -1,4 +1,4 @@
-package com.umedia.CloudGate.dao;
+/*package com.umedia.CloudGate.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -88,4 +88,4 @@ public class UsersDao {
             profile.getName(),
             profile.getUsername());
     }
-}
+}*/
