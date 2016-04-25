@@ -18,6 +18,7 @@ package com.umedia.CloudGate;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 
@@ -25,6 +26,10 @@ import javax.sql.DataSource;
 
 
 
+
+
+
+import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -33,6 +38,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.web.servlet.LocaleResolver;
@@ -46,6 +52,9 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @ComponentScan
 public class SampleWebJspApplication extends SpringBootServletInitializer {
 
+	@Inject
+	private Environment env;
+	
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(SampleWebJspApplication.class);
@@ -58,14 +67,10 @@ public class SampleWebJspApplication extends SpringBootServletInitializer {
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
-		/*ds.setDriverClassName("org.postgresql.Driver");
-		ds.setUrl("jdbc:postgresql://localhost:5432/springtest");
-		ds.setUsername("java");
-		ds.setPassword("12345");*/
-		ds.setDriverClassName("org.mariadb.jdbc.Driver");
-		ds.setUrl("jdbc:mariadb://localhost:3306/cloudsocial");
-		ds.setUsername("root");
-		ds.setPassword("LZ9ESW");	
+		ds.setDriverClassName(env.getProperty("database.driver"));
+		ds.setUrl(env.getProperty("database.url"));
+		ds.setUsername(env.getProperty("database.username"));
+		ds.setPassword(env.getProperty("database.password"));	
 		
 		return ds;
 	}

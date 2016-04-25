@@ -72,6 +72,7 @@ public class JdbcUserRepository implements IUserRepository {
 		 * rs.getString("firstName"), rs.getString("lastName"),
 		 * rs.getString("email"), username); } }, username);
 		 */
+		final String q = username;
 		String qstr = "select * from UserProfile where username = ?";
 		List<UserProfile> profile = jdbcTemplate.query(qstr,
 				new RowMapper<UserProfile>() {
@@ -80,9 +81,9 @@ public class JdbcUserRepository implements IUserRepository {
 						return new UserProfile(rs.getString("userId"), rs
 								.getString("name"), rs.getString("firstName"),
 								rs.getString("lastName"),
-								rs.getString("email"), username);
+								rs.getString("email"), q);
 					}
-				}, username);
+				}, q);
 		if (profile.isEmpty()) {
 			return null;
 		} else if (profile.size() == 1) { // list contains exactly 1 element
@@ -97,17 +98,18 @@ public class JdbcUserRepository implements IUserRepository {
 
 	public UserProfile getUserProfileByUserId(String userId) {
 
+		final String id = userId;
 		String qstr = "select * from UserProfile where userId = ?";
 		List<UserProfile> profile = jdbcTemplate.query(qstr,
 				new RowMapper<UserProfile>() {
 					public UserProfile mapRow(ResultSet rs, int rowNum)
 							throws SQLException {
-						return new UserProfile(userId, rs.getString("name"), rs
+						return new UserProfile(id, rs.getString("name"), rs
 								.getString("firstName"), rs
 								.getString("lastName"), rs.getString("email"),
 								rs.getString("username"));
 					}
-				}, userId);
+				}, id);
 		if (profile.isEmpty()) {
 			return null;
 		} else if (profile.size() == 1) { // list contains exactly 1 element
