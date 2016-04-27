@@ -50,15 +50,18 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
-public class SampleWebJspApplication extends SpringBootServletInitializer {
+//public class SampleWebJspApplication extends SpringBootServletInitializer {
+
+//for jar
+public class SampleWebJspApplication {
 
 	@Inject
 	private Environment env;
 	
-	@Override
+	/*@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(SampleWebJspApplication.class);
-	}
+	}*/
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SampleWebJspApplication.class, args);
@@ -75,19 +78,7 @@ public class SampleWebJspApplication extends SpringBootServletInitializer {
 		return ds;
 	}
 	
-	@Bean
-    public LocaleResolver localeResolver() {
-        final CookieLocaleResolver ret = new CookieLocaleResolver();
-        ret.setDefaultLocale(new Locale("en_US"));
-        return ret;
-    }
-	
-	@Bean 
-	public LocaleChangeInterceptor localeChangeInterceptor(){
-	    LocaleChangeInterceptor localeChangeInterceptor=new LocaleChangeInterceptor();
-	    localeChangeInterceptor.setParamName("language");
-	    return localeChangeInterceptor;
-	}
+
 	
 
 }
